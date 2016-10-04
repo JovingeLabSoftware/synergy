@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, 'lib/python')
+
 from jlab import jlpdb
 
 if __name__ == "__main__":

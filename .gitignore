@@ -84,3 +84,8 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# local data files
+data/
+.mol2
+.dms

@@ -1,15 +1,16 @@
 #!/bin/bash
 
-if [ ! -f /tmp/foo.txt ];
+if [ ! -f 4Z3K.pdb ];
 then
-  wget https://files.rcsb.org/download/4Z3K.pdb --directory-prefix=out
+  wget https://files.rcsb.org/download/4Z3K.pdb
 fi
 
 printf "\n\n1. CLEANING UP PROTEIN STRUCTURE...\n\n"
-python ../pdbsplit.py out/4Z3K.pdb A 
+python ../pdbsplit.py 4Z3K.pdb A 
+mv 4Z3K_A.pdb out
 
 printf "\n\n2. RUNNING DOCKPREP...\n"
-chimera --nogui --silent --script "../dockprep.py out" 4Z3K_A.pdb
+chimera --nogui --silent --script "../dockprep.py out" out/4Z3K_A.pdb
 
 printf "\n\n3. GENERATING SPHERES...\n"
 sphgen 
@@ -18,12 +19,9 @@ mv rec.sph  out/4Z3K_A.sph
 printf "\n\n4. CONVERTING SPHERES TO PDB FOR VIZUALIZATION...\n"
 /opt/dock6/bin/showsphere < sphgen_cluster.in
 mv selected_cluster.pdb out/
-#remove all but first (largest) cluster
-sed -n '/cluster     2/!p;//q' out/4Z3K_A.sph > temp.sph
-mv temp.sph out/4Z3K_A.sph
 
 rm OUTSPH
-rm *.pdb 
+rm *.pdb
 
 printf "\n\nDONE. Output saved in ./out\n\n\n"
 
